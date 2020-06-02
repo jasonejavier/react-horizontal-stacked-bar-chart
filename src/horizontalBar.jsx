@@ -50,7 +50,7 @@ export default class HorizontalBar extends Component {
     let position = (this.props.outlineWidth * 2) / 100;
     let barWidth = 0, initBarWidth = 0;
     const listBars = this.props.data.map(bar => {
-      position = position + barWidth;
+      position = (position || 0) + barWidth;
       initBarWidth = 
         (bar.value * 100) / widthTotal -
         (this.props.outlineWidth * 100) / bar.value / 100;
