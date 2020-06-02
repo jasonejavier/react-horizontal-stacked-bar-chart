@@ -51,9 +51,9 @@ export default class HorizontalBar extends Component {
     let barWidth = 0, initBarWidth = 0;
     const listBars = this.props.data.map(bar => {
       position = (position || 0) + barWidth;
-      initBarWidth = 
-        (bar.value * 100) / widthTotal -
-        (this.props.outlineWidth * 100) / bar.value / 100;
+      initBarWidth = parseInt(bar.value) === 0 ? 0 :
+        ((bar.value * 100) / widthTotal -
+        (this.props.outlineWidth * 100) / bar.value / 100);
       barWidth = isNaN(parseFloat(initBarWidth)) ? 0 : initBarWidth;
       bar = Object.assign(
         { position: position, barWidth: barWidth, widthTotal: widthTotal },
