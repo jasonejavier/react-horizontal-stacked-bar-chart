@@ -48,14 +48,13 @@ export default class HorizontalBar extends Component {
   getListBarWithOtherParameters() {
     const widthTotal = this.calcWidthTotal();
     let position = (this.props.outlineWidth * 2) / 100;
-    let initBarWidth = 0, barWidth = 0;
+    let barWidth = 0, initBarWidth = 0;
     const listBars = this.props.data.map(bar => {
-      initBarWidth =
-      (bar.value * 100) / widthTotal -
-      (this.props.outlineWidth * 100) / bar.value / 100;
-      barWidth = isNaN(initBarWidth) ? 0 : initBarWidth;
       position = position + barWidth;
-
+      initBarWidth = 
+        (bar.value * 100) / widthTotal -
+        (this.props.outlineWidth * 100) / bar.value / 100;
+      barWidth = isNaN(parseFloat(initBarWidth)) ? 0 : initBarWidth;
       bar = Object.assign(
         { position: position, barWidth: barWidth, widthTotal: widthTotal },
         bar
@@ -119,47 +118,43 @@ export default class HorizontalBar extends Component {
 
     listBars.push(
       this.state.listBars.map((bar, index) => {
-        const barWidth = isNaN(parseFloat(bar.barWidth)) ? 0 : bar.barWidth;
-        const xPos = isNaN(parseFloat(bar.position)) ? 0 : bar.position;
-        if(!isNaN(parseFloat(barWidth)) && !isNaN(parseFloat(xPos))) {
-          return (
-            <g key={index} onClick={e => this.onClick(e, bar)}>
-              <rect
-                width={`${parseFloat(barWidth || 0) + 0.1}%`}
-                height={this.props.height}
-                style={{
-                  fill: bar.color || this.randomColor(),
-                  strokeWidth: `${(this.props.outlineWidth * 100) /
-                    (bar.widthTotal / this.props.data.length)}%`,
-                  stroke: this.props.outlineColor
-                }}
-                x={`${xPos}%`}
-              />
-              {(this.props.showTextIn || this.props.showValueIn) && (
-                <text
-                  style={{ fill: this.props.fontColor, fontSize: "90%" }}
-                  x={
-                    this.props.outlineWidth > 0
-                      ? `${xPos +
-                          (this.props.outlineWidth * 100) /
-                            (bar.widthTotal / this.props.data.length)}%`
-                      : `${xPos + 1}%`
-                  }
-                  y="50%"
-                  dy="0.35em"
-                >
-                  {showTextIn && bar.name}
-                  {bar.name && showTextIn ? ": " : ""}
-                  {(showValueIn || showTextWithValue) &&
-                    (bar.description || bar.value || "1")}
-                </text>
-              )}
-              <title>{`${bar.name || ""}${
-                bar.name ? ": " : ""
-              }${bar.description || bar.value || "1"}`}</title>
-            </g>
-          );
-        }
+        return (
+          <g key={index} onClick={e => this.onClick(e, bar)}>
+            <rect
+              width={`${bar.barWidth + 0.1}%`}
+              height={this.props.height}
+              style={{
+                fill: bar.color || this.randomColor(),
+                strokeWidth: `${(this.props.outlineWidth * 100) /
+                  (bar.widthTotal / this.props.data.length)}%`,
+                stroke: this.props.outlineColor
+              }}
+              x={`${bar.position}%`}
+            />
+            {(this.props.showTextIn || this.props.showValueIn) && (
+              <text
+                style={{ fill: this.props.fontColor, fontSize: "90%" }}
+                x={
+                  this.props.outlineWidth > 0
+                    ? `${bar.position +
+                        (this.props.outlineWidth * 100) /
+                          (bar.widthTotal / this.props.data.length)}%`
+                    : `${bar.position + 1}%`
+                }
+                y="50%"
+                dy="0.35em"
+              >
+                {showTextIn && bar.name}
+                {bar.name && showTextIn ? ": " : ""}
+                {(showValueIn || showTextWithValue) &&
+                  (bar.description || bar.value || "1")}
+              </text>
+            )}
+            <title>{`${bar.name || ""}${
+              bar.name ? ": " : ""
+            }${bar.description || bar.value || "1"}`}</title>
+          </g>
+        );
       })
     );
     return listBars;
