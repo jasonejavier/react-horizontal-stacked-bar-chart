@@ -48,12 +48,14 @@ export default class HorizontalBar extends Component {
   getListBarWithOtherParameters() {
     const widthTotal = this.calcWidthTotal();
     let position = (this.props.outlineWidth * 2) / 100;
-    let barWidth = 0;
+    let initBarWidth = 0, barWidth;
     const listBars = this.props.data.map(bar => {
       position = position + barWidth;
-      barWidth =
+      initBarWidth =
         (bar.value * 100) / widthTotal -
         (this.props.outlineWidth * 100) / bar.value / 100;
+      barWidth = isNaN(initBarWidth) ? 0 : initBarWidth;
+
       bar = Object.assign(
         { position: position, barWidth: barWidth, widthTotal: widthTotal },
         bar
