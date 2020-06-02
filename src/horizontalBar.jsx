@@ -119,13 +119,13 @@ export default class HorizontalBar extends Component {
 
     listBars.push(
       this.state.listBars.map((bar, index) => {
-        const barWidth = isNaN(parseInt(bar.barWidth)) ? 0 : bar.barWidth;
-        const xPos = isNaN(parseInt(bar.position)) ? 0 : bar.position;
-        if(!isNaN(parseInt(barWidth)) && !isNaN(parseInt(xPos))) {
+        const barWidth = isNaN(parseFloat(bar.barWidth)) ? 0 : bar.barWidth;
+        const xPos = isNaN(parseFloat(bar.position)) ? 0 : bar.position;
+        if(!isNaN(parseFloat(barWidth)) && !isNaN(parseFloat(xPos))) {
           return (
             <g key={index} onClick={e => this.onClick(e, bar)}>
               <rect
-                width={`${barWidth + 0.1}%`}
+                width={`${parseFloat(barWidth || 0) + 0.1}%`}
                 height={this.props.height}
                 style={{
                   fill: bar.color || this.randomColor(),
