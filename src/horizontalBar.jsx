@@ -119,10 +119,12 @@ export default class HorizontalBar extends Component {
 
     listBars.push(
       this.state.listBars.map((bar, index) => {
+        const barWidth = isNaN(bar.barWidth) ? 0 : bar.barWidth;
+        const xPos = isNaN(bar.position) ? 0 : bar.position;
         return (
           <g key={index} onClick={e => this.onClick(e, bar)}>
             <rect
-              width={`${bar.barWidth + 0.1}%`}
+              width={`${barWidth + 0.1}%`}
               height={this.props.height}
               style={{
                 fill: bar.color || this.randomColor(),
@@ -130,17 +132,17 @@ export default class HorizontalBar extends Component {
                   (bar.widthTotal / this.props.data.length)}%`,
                 stroke: this.props.outlineColor
               }}
-              x={`${bar.position}%`}
+              x={`${xPos}%`}
             />
             {(this.props.showTextIn || this.props.showValueIn) && (
               <text
                 style={{ fill: this.props.fontColor, fontSize: "90%" }}
                 x={
                   this.props.outlineWidth > 0
-                    ? `${bar.position +
+                    ? `${xPos +
                         (this.props.outlineWidth * 100) /
                           (bar.widthTotal / this.props.data.length)}%`
-                    : `${bar.position + 1}%`
+                    : `${xPos + 1}%`
                 }
                 y="50%"
                 dy="0.35em"
