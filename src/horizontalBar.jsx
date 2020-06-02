@@ -121,7 +121,7 @@ export default class HorizontalBar extends Component {
       this.state.listBars.map((bar, index) => {
         const barWidth = isNaN(bar.barWidth) ? 0 : bar.barWidth;
         const xPos = isNaN(bar.position) ? 0 : bar.position;
-        if(barWidth) {
+        if(barWidth && xPos) {
           return (
             <g key={index} onClick={e => this.onClick(e, bar)}>
               <rect
